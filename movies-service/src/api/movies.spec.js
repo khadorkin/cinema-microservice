@@ -71,7 +71,7 @@ describe('Movies API', () => {
 
   it('can get movie premiers', (done) => {
     request(app)
-    .get('/movies/premiers')
+    .get('/movies/premieres')
     .expect((res) => {
       res.body.should.containEql({
         'id': '1',
