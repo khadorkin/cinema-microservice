@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 
-eval `docker-machine env manager1`
+for server in manager1 worker1 worker2
+do
+    eval `docker-machine env $server`
 
-docker rm -f api-gateway-service
+    echo $(env | grep DOCKER)
 
-docker rmi api-gateway-service
+    docker rm -f api-gateway-service
 
-docker image prune
+    docker rmi api-gateway-service
 
-docker volume prune
+    docker image prune
 
-docker build -t api-gateway-service .
+    docker volume prune
 
-docker run --name api-gateway-service -v /Users/Cramirez/.docker/machine/machines/manager1:/certs --net='host' --env-file env -d api-gateway-service
+    docker build -t api-gateway-service .
+
+    docker run --name api-gateway-service -v /Users/Cramirez/.docker/machine/machines/$server:/certs --net='host' --env-file env -d api-gateway-service
+
+done
